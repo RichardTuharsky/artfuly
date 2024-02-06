@@ -3,18 +3,29 @@ import CollagePreviewAndDownload from './components/CollagePreviewAndDownload'; 
 import DragAndDropArea from './components/DragAndDropArea'; // Import the 'DragAndDropArea' component
 import CollageCreator from './components/CollageCreator'; // Import the 'CollageCreator' component
 import React, { useState } from 'react';
+import ImagePreview from './components/ImagePreview';
+
 
 const App = () => {
-  const [collageDataURL, setCollageDataURL] = useState('');
   const [uploadedImages, setUploadedImages] = useState([]);
+  const [collageDataURL, setCollageDataURL] = useState('');
+
+  const handleFilesAdded = (newImages) => {
+    setUploadedImages(prevImages => [...prevImages, ...newImages]);
+  };
 
   return (
-      <div>
-          <CollageCreator onCollageComplete={setCollageDataURL} />
-          <CollagePreviewAndDownload collageDataURL={collageDataURL} />
-          <DragAndDropArea/>
-      </div>
+    <div>
+       <div className="app-container">
+          <DragAndDropArea onFilesAdded={handleFilesAdded} />
+        </div>
+          <div className="image-preview-container">
+            <ImagePreview images={uploadedImages} />
+          </div>
+      <CollageCreator onCollageComplete={setCollageDataURL} />
+      <CollagePreviewAndDownload collageDataURL={collageDataURL} />
+    </div>
   );
 };
 
-export default App;
+export default App; 

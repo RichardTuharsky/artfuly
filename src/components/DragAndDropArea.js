@@ -1,88 +1,70 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-const baseStyle = {
+const containerStyle = {
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
+  alignItems: 'flex-start',
+  justifyContent: 'space-between'
+};
+
+const dropzoneStyle = {
+  flex: '0 0 auto',
+    display: 'grid',
   padding: '20px',
   borderWidth: 2,
   borderRadius: 2,
+  marginBottom: 8,
+  marginRight: 8,
   borderColor: '#eeeeee',
   borderStyle: 'dashed',
   backgroundColor: '#fafafa',
   color: '#bdbdbd',
-  transition: 'border .3s ease-in-out'
+  transition: 'border .3s ease-in-out',
+  width: '500px',
+  height: '200px',
+  overflow: 'hidden'
 };
 
-const activeStyle = {
-  borderColor: '#2196f3'
+const thumbContainerStyle = {
+  flex: '1 1 auto',
+  display: 'flex',
+  flexWrap: 'wrap',
+  marginLeft: '20px'
 };
 
-const acceptStyle = {
-  borderColor: '#00e676'
-};
-
-const rejectStyle = {
-  borderColor: '#ff1744'
-};
 
 function DragAndDropArea(props) {
   const [files, setFiles] = useState([]);
 
   const onDrop = useCallback(acceptedFiles => {
-    setFiles(acceptedFiles.map(file => Object.assign(file, {
-      preview: URL.createObjectURL(file)
-    })));
-  }, []);
+    const filePreviews = acceptedFiles.map(file => URL.createObjectURL(file));
+    props.onFilesAdded(filePreviews); // Assuming a prop named 'onFilesAdded'
+  }, [props]);
+  
 
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject
-  } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: 'image/jpeg, image/png'
   });
 
-  const style = useMemo(() => ({
-    ...baseStyle,
-    ...(isDragActive ? activeStyle : {}),
-    ...(isDragAccept ? acceptStyle : {}),
-    ...(isDragReject ? rejectStyle : {})
-  }), [
-    isDragActive,
-    isDragReject,
-    isDragAccept
-  ]);
 
-  const thumbs = files.map(file => (
-    <div key={file.name}>
-      <img
-        src={file.preview}
-        alt={file.name}
-      />
-    </div>
-  ));
 
-  // clean up
   useEffect(() => () => {
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
 
   return (
-    <section>
-      <div {...getRootProps({style})}>
+    <div style={containerStyle}>
+      <section {...getRootProps({style: dropzoneStyle})}>
         <input {...getInputProps()} />
-        <div>Drag and drop your images here.</div>
-      </div>
-      <aside>
-        {thumbs}
-      </aside>
-    </section>
-  )
+        <p>Drag and drop your images here.</p>
+      </section>
+      <input {...getInputProps()} aria-label="Drop images here" />
+
+    </div>
+    
+  );
 }
 
 export default DragAndDropArea;
