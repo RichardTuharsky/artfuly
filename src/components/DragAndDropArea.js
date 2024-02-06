@@ -10,7 +10,7 @@ const containerStyle = {
 
 const dropzoneStyle = {
   flex: '0 0 auto',
-    display: 'grid',
+    display: 'flex',
   padding: '20px',
   borderWidth: 2,
   borderRadius: 2,
@@ -26,12 +26,7 @@ const dropzoneStyle = {
   overflow: 'hidden'
 };
 
-const thumbContainerStyle = {
-  flex: '1 1 auto',
-  display: 'flex',
-  flexWrap: 'wrap',
-  marginLeft: '20px'
-};
+
 
 
 function DragAndDropArea(props) {
@@ -55,7 +50,7 @@ function DragAndDropArea(props) {
   }, [files]);
 
   return (
-    <div style={containerStyle}>
+    <div>
       <section {...getRootProps({style: dropzoneStyle})}>
         <input {...getInputProps()} />
         <p>Drag and drop your images here.</p>

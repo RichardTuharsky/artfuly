@@ -19,11 +19,11 @@ const App = () => {
        <div className="app-container">
           <DragAndDropArea onFilesAdded={handleFilesAdded} />
         </div>
+          <CollageCreator onCollageComplete={setCollageDataURL} />
+          <CollagePreviewAndDownload collageDataURL={collageDataURL} />
           <div className="image-preview-container">
             <ImagePreview images={uploadedImages} />
           </div>
-      <CollageCreator onCollageComplete={setCollageDataURL} />
-      <CollagePreviewAndDownload collageDataURL={collageDataURL} />
     </div>
   );
 };
