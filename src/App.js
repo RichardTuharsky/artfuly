@@ -19,11 +19,14 @@ const App = () => {
        <div className="app-container">
           <DragAndDropArea onFilesAdded={handleFilesAdded} />
         </div>
-          <CollageCreator onCollageComplete={setCollageDataURL} />
+        <input type="file" id="imageUpload" accept="image/*" multiple style={{ display: 'none' }} />
+        <input type="file" id="watermarkUpload" accept="image/*" style={{ display: 'none' }} />
+
           <CollagePreviewAndDownload collageDataURL={collageDataURL} />
           <div className="image-preview-container">
             <ImagePreview images={uploadedImages} />
           </div>
+          <CollageCreator onCollageComplete={setCollageDataURL} />
     </div>
   );
 };

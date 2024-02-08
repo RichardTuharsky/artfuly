@@ -9,8 +9,12 @@ const CollageCreator = ({onCollageComplete}) => {
         const context = canvas.getContext('2d');
         const images = document.getElementById('imageUpload').files;
         const watermark = document.getElementById('watermarkUpload').files[0];
-        const horizontalCount = parseInt(document.getElementById('horizontalCount').value);
-        const verticalCount = parseInt(document.getElementById('verticalCount').value);
+        const horizontalCountElement = document.getElementById('horizontalCount');
+        const verticalCountElement = document.getElementById('verticalCount');
+    
+        // Safely get the values from the elements, defaulting to 1 if they're not found
+        const horizontalCount = horizontalCountElement ? parseInt(horizontalCountElement.value) : 1;
+        const verticalCount = verticalCountElement ? parseInt(verticalCountElement.value) : 1;
 
         canvas.width = 2000;
         canvas.height = 2000;
@@ -26,6 +30,7 @@ const CollageCreator = ({onCollageComplete}) => {
         }
 
         Promise.all(promises).then(loadedImages => {
+            
             if (loadedImages.length > 0 && loadedImages[0].width) {
                 canvas.width = loadedImages[0].width * horizontalCount;
                 canvas.height = loadedImages[0].height * verticalCount;

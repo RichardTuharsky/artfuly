@@ -33,15 +33,30 @@ function DragAndDropArea(props) {
   const [files, setFiles] = useState([]);
 
   const onDrop = useCallback(acceptedFiles => {
-    const filePreviews = acceptedFiles.map(file => URL.createObjectURL(file));
-    props.onFilesAdded(filePreviews); // Assuming a prop named 'onFilesAdded'
+    if (acceptedFiles.length > 0) {
+      // Create file previews
+      const filePreviews = acceptedFiles.map(file => URL.createObjectURL(file));
+      
+      // Update state or lift state up with the new file previews
+      props.onFilesAdded(filePreviews);
+
+      // Log success message to the console
+      console.log("Images accepted, success");
+    } else {
+      // Log failure message to the console
+      console.log("Can't see images");
+    }
   }, [props]);
   
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    accept: 'image/jpeg, image/png'
+    accept: {
+      'image/*': ['.jpeg', '.jpg', '.png'],
+    },
   });
+
+  
 
 
 
