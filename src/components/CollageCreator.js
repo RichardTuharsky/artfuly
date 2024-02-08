@@ -30,10 +30,12 @@ const CollageCreator = ({onCollageComplete}) => {
         }
 
         Promise.all(promises).then(loadedImages => {
-            
+            console.log(loadedImages); // Check what's in the loaded images
+
             if (loadedImages.length > 0 && loadedImages[0].width) {
                 canvas.width = loadedImages[0].width * horizontalCount;
                 canvas.height = loadedImages[0].height * verticalCount;
+                
 
                 for (let i = 0; i < verticalCount; i++) {
                     for (let j = 0; j < horizontalCount; j++) {

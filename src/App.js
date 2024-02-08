@@ -25,8 +25,8 @@ const App = () => {
           <CollagePreviewAndDownload collageDataURL={collageDataURL} />
           <div className="image-preview-container">
             <ImagePreview images={uploadedImages} />
-          </div>
           <CollageCreator onCollageComplete={setCollageDataURL} />
+          </div>
     </div>
   );
 };

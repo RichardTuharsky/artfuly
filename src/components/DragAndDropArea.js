@@ -56,14 +56,11 @@ function DragAndDropArea(props) {
     },
   });
 
-  
-
-
-
   useEffect(() => () => {
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
 
+  
   return (
     <div>
       <section {...getRootProps({style: dropzoneStyle})}>
