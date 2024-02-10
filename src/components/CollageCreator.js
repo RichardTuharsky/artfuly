@@ -1,41 +1,33 @@
 import React, { useState, useRef } from 'react';
 
-
-const CollageCreator = ({onCollageComplete}) => {
+const CollageCreator = ({ onCollageComplete, uploadedImages, watermarkURL }) => {
     const canvasRef = useRef(null);
 
     const createCollage = () => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
-        const images = document.getElementById('imageUpload').files;
-        const watermark = document.getElementById('watermarkUpload').files[0];
         const horizontalCountElement = document.getElementById('horizontalCount');
         const verticalCountElement = document.getElementById('verticalCount');
-    
-        // Safely get the values from the elements, defaulting to 1 if they're not found
+        
         const horizontalCount = horizontalCountElement ? parseInt(horizontalCountElement.value) : 1;
         const verticalCount = verticalCountElement ? parseInt(verticalCountElement.value) : 1;
 
         canvas.width = 2000;
         canvas.height = 2000;
 
-        let promises = [];
-        for (let i = 0; i < images.length; i++) {
+        let promises = uploadedImages.map(imageSrc => {
             let img = new Image();
-            img.src = URL.createObjectURL(images[i]);
-            promises.push(new Promise((resolve, reject) => {
+            img.src = imageSrc;
+            return new Promise((resolve, reject) => {
                 img.onload = () => resolve(img);
                 img.onerror = reject;
-            }));
-        }
+            });
+        });
 
         Promise.all(promises).then(loadedImages => {
-            console.log(loadedImages); // Check what's in the loaded images
-
             if (loadedImages.length > 0 && loadedImages[0].width) {
                 canvas.width = loadedImages[0].width * horizontalCount;
                 canvas.height = loadedImages[0].height * verticalCount;
-                
 
                 for (let i = 0; i < verticalCount; i++) {
                     for (let j = 0; j < horizontalCount; j++) {
@@ -49,18 +41,22 @@ const CollageCreator = ({onCollageComplete}) => {
                 console.error('No images or invalid image width');
             }
 
-            addWatermark(watermark, canvas, context);
+            if (watermarkURL) {
+                addWatermark(watermarkURL, canvas, context);
+            } else {
+                generateCollage(canvas);
+            }
         });
     };
 
-    const addWatermark = (watermark, canvas, context) => {
+    const addWatermark = (watermarkURL, canvas, context) => {
         let watermarkCanvas = document.createElement('canvas');
         let watermarkContext = watermarkCanvas.getContext('2d');
         watermarkCanvas.width = canvas.width;
         watermarkCanvas.height = canvas.height;
 
         let watermarkImg = new Image();
-        watermarkImg.src = URL.createObjectURL(watermark);
+        watermarkImg.src = watermarkURL;
         watermarkImg.onload = () => {
             let watermarkWidth = watermarkImg.width;
             let watermarkHeight = watermarkImg.height;
@@ -78,8 +74,6 @@ const CollageCreator = ({onCollageComplete}) => {
     };
 
     const generateCollage = (canvas) => {
-        // Remove the zip and saveAs logic
-        // Set the collage image data URL to pass to the parent component
         const collageDataURL = canvas.toDataURL('image/png');
         onCollageComplete(collageDataURL);
     };

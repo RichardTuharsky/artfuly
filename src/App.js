@@ -29,8 +29,11 @@ const App = () => {
             <div className="image-preview-container">
                 <ImagePreview images={uploadedImages} />
             </div>
-            <CollageCreator onCollageComplete={setCollageDataURL} uploadedImages={uploadedImages} watermarkURL={watermarkURL} />
-        </div>
+            <CollageCreator 
+                onCollageComplete={setCollageDataURL} 
+                uploadedImages={uploadedImages}
+                watermarkURL={watermarkURL}
+            />        </div>
     );
 };
 
