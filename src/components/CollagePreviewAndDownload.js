@@ -19,7 +19,7 @@ const CollagePreviewAndDownload = ({ collageDataURL }) => {
 
     return (
         <div>
-            <img src={collageDataURL} alt="Collage" />
+            <img src={collageDataURL} alt="Collage" style={{width: '500px', height: '500px'}}/>
             <button onClick={downloadCollage}>Download Collage</button>
         </div>
     );

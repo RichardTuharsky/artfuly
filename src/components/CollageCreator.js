@@ -3,17 +3,22 @@ import React, { useState, useRef } from 'react';
 const CollageCreator = ({ onCollageComplete, uploadedImages, watermarkURL }) => {
     const canvasRef = useRef(null);
 
+
     const createCollage = () => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
         const horizontalCountElement = document.getElementById('horizontalCount');
         const verticalCountElement = document.getElementById('verticalCount');
         
+
         const horizontalCount = horizontalCountElement ? parseInt(horizontalCountElement.value) : 1;
         const verticalCount = verticalCountElement ? parseInt(verticalCountElement.value) : 1;
 
-        canvas.width = 2000;
-        canvas.height = 2000;
+        
+        canvas.width = 500;
+        canvas.height = 500;
+        console.log('Canvas Size:', canvas.width, canvas.height);
+
 
         let promises = uploadedImages.map(imageSrc => {
             let img = new Image();
